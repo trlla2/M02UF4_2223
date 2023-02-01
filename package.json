@@ -1,0 +1,19 @@
+{
+  "name": "m02uf4_2223",
+  "version": "1.0.0",
+  "description": "MongoDBNodeJS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/trlla2/M02UF4_2223.git"
+  },
+  "author": "Roc",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/trlla2/M02UF4_2223/issues"
+  },
+  "homepage": "https://github.com/trlla2/M02UF4_2223#readme"
+}
