@@ -25,6 +25,10 @@ async function db_connect() {
 	//const collection = db.collection('characters');
 
 	//the following code examples can be paste here...
+	const cursor = await collection.find({});
+	const charcaters = await cursor.toArray();
+	console.log(characters);
+	
 
 
 	return 'Conectandonos a la base de datos de mongoDB ';
