@@ -1,0 +1,55 @@
+#!/usr/bin/node
+
+
+
+
+const http = require('http');
+const { MongoClient } = require('mongodb');
+//or as a module:
+//import  { MongoClient } from 'mongodb'
+
+//conection url 
+const url = 'mongodb://127.0.0.1:27017';
+const client = new MongoClient(url);
+
+//database name
+const dbName = 'abascal';
+
+let db;
+
+async function db_connect() {
+	//use conection method to conect to the server
+	await client.connect();
+	console.log('Connected successfully to sever');
+	db = client.db(dbName);
+	//const collection = db.collection('characters');
+
+	//the following code examples can be paste here...
+
+
+
+	return 'Conectandonos a la base de datos de mongoDB ';
+}
+
+db_connect()
+	.then(info => console.log(info))
+	.catch(msg => console.error(msg));
+
+
+let http_server = http.createServer(function(request, response){
+	let collection = db.collection('characters');
+	collection({}).toArray().then(query =>{ 
+	console.log(query)
+	response.write(query);
+	response.end();
+	});
+	
+	console.log(collection);	
+	console.log("alguien se conecta");
+	response.write('ola k ase');
+	response.end();
+});
+
+http_server.listen(8080);
+
+
