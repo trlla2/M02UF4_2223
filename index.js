@@ -30,7 +30,6 @@ async function db_connect() {
 db_connect()
 	.then(info => console.log(info))
 	.catch(msg => console.error(msg));
-
 function send_characters (response){
 	let collection = db.collection('characters');
 	
@@ -41,6 +40,38 @@ function send_characters (response){
 		
 		for (let i = 0; i < characters.length; i++){
 			names.push(characters[i].name);
+		}
+
+		response.write(JSON.stringify(names));
+		response.end();
+	});
+}
+
+function send_items (response){
+	let collection = db.collection('items');
+
+	collection.find({}).toArray().then(items =>{ 
+		let names = [];
+		
+		for (let i = 0; i < items.length; i++){
+			names.push(items[i].name);
+		}
+
+		response.write(JSON.stringify(names));
+		response.end();
+	});
+}
+
+function send_weapons (response){
+	let collection = db.collection('weapons');
+	
+
+
+	collection.find({}).toArray().then(weapons =>{ 
+		let names = [];
+		
+		for (let i = 0; i < weapons.length; i++){
+			names.push(weapons[i].name);
 		}
 
 		response.write(JSON.stringify(names));
@@ -87,6 +118,12 @@ let http_server = http.createServer(function(request, response){
 	switch(url[1]){
 		case "characters":
 			send_characters(response);
+			break;
+		case "items":
+			send_items(response);
+			break;
+		case "weapons":
+			send_weapons(response);
 			break;
 		case "age":
 			send_age(response, url);
