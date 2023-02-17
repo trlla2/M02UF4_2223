@@ -30,6 +30,7 @@ async function db_connect() {
 db_connect()
 	.then(info => console.log(info))
 	.catch(msg => console.error(msg));
+
 function send_characters (response){
 	let collection = db.collection('characters');
 	
@@ -47,7 +48,55 @@ function send_characters (response){
 	});
 }
 
+function send_characters_items(response,url){
+	let name = url[2].trim();
+	if (name == ""){
+		response.write("ERROR: url mal formada");
+		response.end();
+
+		return;
+	}
+
+	let collection = db.collection('characters');
+	collection.find({"name":name}).toArray().then(character =>{
+		if(character.length != 1){
+			response.write("ERROR: el personaje"+ name +" no existe");
+			response.end();
+			return;
+		}
+
+		let id = character[0].id_character;
+
+		let collection = db.collection('characters_items');
+		collection.find({"id_character":id}).toArray().then(ids =>{
+		if(ids.length == 0){
+			response.write("[]");
+			response.end();
+
+			return;
+		}
+		let ids_items = [];
+		ids.forEach(element =>{
+			ids_items.push(element.id_item);
+		});
+		let collection = db.collection('items');
+		collection.find({"id_item":{$in:ids_items}).toArray().then(items => {
+			response.write(JSON.stringify(items));
+			response.end();
+
+			return;
+			)};
+		)};
+	});
+}
+
+
 function send_items (response){
+	if (url.length >=3){
+		send_characters_items (response,url);
+		
+		return;
+	}
 	let collection = db.collection('items');
 
 	collection.find({}).toArray().then(items =>{ 
@@ -120,7 +169,7 @@ let http_server = http.createServer(function(request, response){
 			send_characters(response);
 			break;
 		case "items":
-			send_items(response);
+			send_items(response, url);
 			break;
 		case "weapons":
 			send_weapons(response);
