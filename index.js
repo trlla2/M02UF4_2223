@@ -1,9 +1,8 @@
 #!/usr/bin/node
-
 const http = require('http');
 const { MongoClient } = require('mongodb');
-const fs = require("fs");
-
+const fs = require('fs');
+const qs = require('querystring');
 //conection url 
 const url = 'mongodb://127.0.0.1:27017';
 const client = new MongoClient(url);
@@ -80,13 +79,13 @@ function send_characters_items(response,url){
 			ids_items.push(element.id_item);
 		});
 		let collection = db.collection('items');
-		collection.find({"id_item":{$in:ids_items}).toArray().then(items => {
+		collection.find({"id_item":{$in:ids_items}}).toArray().then(items => {
 			response.write(JSON.stringify(items));
 			response.end();
 
 			return;
-			)};
-		)};
+			});
+		});
 	});
 }
 
@@ -155,6 +154,47 @@ function send_age(response, url){
 	});
 }
 
+function insert_character(request, response){
+	if (request.method != "POST"){
+		response.write("ERROR: Formulario no enviado");
+		response.end();
+
+		return;
+	}
+	let data = "";
+	request.on('data', function(character_chunk){
+		data += character_chunk;
+	});
+
+	request.on('end', function() {
+		console.log(data);
+
+		let info = qs.parse(data);
+
+		console.log(info);
+
+		let collection = db.collection("characters");
+		
+		if (info.name == undefined){
+			response.write("ERROR: edad no definido");
+			response.end();
+			return;
+		}
+		
+		let insert_info = {
+			name: info.name,
+			age: parseInt(info.age)
+		};
+
+		collection.insertOne(insert_info);
+		
+		response.write("Nuevo personaje "+insert_info.name+" insertado");
+
+		response.end();
+	});
+	response.end();
+}
+
 
 let http_server = http.createServer(function(request, response){
 
@@ -176,6 +216,9 @@ let http_server = http.createServer(function(request, response){
 			break;
 		case "age":
 			send_age(response, url);
+			break;
+		case "charcter_form":
+			insert_character(request, response);
 			break;
 		default:
 			fs.readFile("index.html", function(err, data){

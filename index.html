@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8"/>
 <title>Pagina Mondongo</title>
 <script type="text/javascript" src="index.js"></script>
 </head>
@@ -12,15 +13,29 @@
 <li><button id="items-button" onclick="getItems(); return false;">Objetos</button></li>
 <li><button id="weapons-button" onclick="getWeapons(); return false;">Armas</button></li>
 </ul>
+<ul>
+<li><button id="character-yuca" onclick="characterInfo('Yuca'); return false;">Yuca</button></li>
+<li><button id="character-yulen" onclick="characterInfo('Yulen'); return false;">Yulen</button></li>
+<li><button id="character-Josema" onclick="characterInfo('Josema'); return false;">Josema</button></li>
+<li><button id="character-Payoh" onclick="characterInfo('Payoh'); return false;">Payoh</button></li>
+</ul>
 </nav>
 <main id="container">
 
 </main>
+<form action="/character_form" method="POST">
+<h2>Añadir personaje</h2>
+<p><label for="character-name">Nombre</label>
+<input type="text" name="name" id="character-name"/></p>
+<p><label for="character-age">Edad</label>
+<input type="text" name="age" id="character-age"/></p>
+<p><input type="submit" value="¡Añadir personaje!"/> </p>
+</form>
 <footer>
 <p>Roc Allue Canut (c) 2022</p>
 </footer>
 <script>
-function getCharacters (){
+function getCharacters(){
 	
 	fetch("/characters")
 		.then(response => response.js())
