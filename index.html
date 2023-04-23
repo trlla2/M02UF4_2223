@@ -37,8 +37,8 @@
 <script>
 function getCharacters(){
 	
-	fetch("/characters")
-		.then(response => response.js())
+	fetch("http://192.168.1.117:8080/characters")
+		.then(response => response.json())
 		.then (characters => {
 		let list = "<ul>";
 		for(let i = 0; i < characters.length; i++){
@@ -49,8 +49,8 @@ function getCharacters(){
 	});
 }
 function getItems(){
-	fetch("/items")
-		.then(response => response.js())
+	fetch("https://192.168.1.117:8080/items")
+		.then(response => response.json())
 		.then(items =>{
 		let  list = "<ul>";
 		for(let i=0; i<items.length; i++){
@@ -61,8 +61,8 @@ function getItems(){
 	});
 }
 function getWeapons(){
-	fetch("/weapons")
-		.then(response => response.js())
+	fetch("http://192.168.1.117:8080/weapons")
+		.then(response => response.json())
 		.then(weapons =>{
 		let  list = "<ul>";
 		for(let i=0; i<weapons.length; i++){
@@ -71,6 +71,13 @@ function getWeapons(){
 		list += "</ul>"
 		document.getElementById("container").innerHTML = list;
 	});
+}
+function characterInfo(name){
+	fetch("http://192.168.1.117:8080/?name=" + name)
+		.then(response => response.json())
+		.then(charcter => {
+			console.log(character);
+		}
 }
 </script>
 </body>
