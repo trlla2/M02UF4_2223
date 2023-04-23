@@ -195,6 +195,17 @@ function insert_character(request, response){
 	response.end();
 }
 
+function send_character(response, id){
+	
+	collection = db.collection('characters');
+	
+	collection.find({"id_character": Number(id)).project({_id:0}).toArray()
+		.then(character =>{
+			response.write(JSON.stringify(character));
+			response.end();
+		});
+	}
+}
 
 let http_server = http.createServer(function(request, response){
 
@@ -203,7 +214,7 @@ let http_server = http.createServer(function(request, response){
 		return;
 	}
 	let url = request.url.split("/");
-	
+	let ask = request.url.split("?");
 	switch(url[1]){
 		case "characters":
 			send_characters(response);
@@ -221,6 +232,14 @@ let http_server = http.createServer(function(request, response){
 			insert_character(request, response);
 			break;
 		default:
+			if(ask[1]){
+				let equal = ask[1].split("=");
+				let id = equal[1];
+
+				send_character(response, id);
+				break;
+			}
+			
 			fs.readFile("index.html", function(err, data){
 				if (err){
 					console.error(err);

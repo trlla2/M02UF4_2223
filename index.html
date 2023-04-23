@@ -14,10 +14,10 @@
 <li><button id="weapons-button" onclick="getWeapons(); return false;">Armas</button></li>
 </ul>
 <ul>
-<li><button id="character-yuca" onclick="characterInfo('Yuca'); return false;">Yuca</button></li>
-<li><button id="character-yulen" onclick="characterInfo('Yulen'); return false;">Yulen</button></li>
-<li><button id="character-Josema" onclick="characterInfo('Josema'); return false;">Josema</button></li>
-<li><button id="character-Payoh" onclick="characterInfo('Payoh'); return false;">Payoh</button></li>
+<li><button id="character-yuca" onclick="characterInfo(1); return false;">Yuca</button></li>
+<li><button id="character-yulen" onclick="characterInfo(2); return false;">Yulen</button></li>
+<li><button id="character-Josema" onclick="characterInfo(3); return false;">Josema</button></li>
+<li><button id="character-Payoh" onclick="characterInfo(4); return false;">Payoh</button></li>
 </ul>
 </nav>
 <main id="container">
@@ -72,13 +72,25 @@ function getWeapons(){
 		document.getElementById("container").innerHTML = list;
 	});
 }
-function characterInfo(name){
-	fetch("http://192.168.1.117:8080/?name=" + name)
+
+function characterInfo(id){
+	fetch("http://192.168.1.117:8080/?id_character="+ id)
 		.then(response => response.json())
 		.then(charcter => {
-			console.log(character);
-		}
+			let list = "<ul>";
+
+			list += "<li> Name: " + character[0].name + "</li>";
+			list += "<li> Age: " + character[0].age + "</li>";
+			list += "<li> Class: " + character[0].class + "</li>";
+			list += "<li> Gender: " + character[0].gender + "</li>";
+			list += "<li> Heigth: " + character[0].heigth + "</li>";
+			list += "<li> Origin: " + character[0].origin + "</li>";
+			list += "<li> Race: " + character[0].race + "</li>";
+			list += "<li> Weight: " + character[0].weight + "</li> </ul>";
+		});	
 }
+
+
 </script>
 </body>
 </html>
