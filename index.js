@@ -199,12 +199,11 @@ function send_character(response, id){
 	
 	collection = db.collection('characters');
 	
-	collection.find({"id_character": Number(id)).project({_id:0}).toArray()
+	collection.find({"id_character": Number(id) }).project({ _id:0 }).toArray()
 		.then(character =>{
 			response.write(JSON.stringify(character));
 			response.end();
 		});
-	}
 }
 
 let http_server = http.createServer(function(request, response){
@@ -235,9 +234,9 @@ let http_server = http.createServer(function(request, response){
 			if(ask[1]){
 				let equal = ask[1].split("=");
 				let id = equal[1];
-
+				
 				send_character(response, id);
-				break;
+				return;
 			}
 			
 			fs.readFile("index.html", function(err, data){
