@@ -199,7 +199,7 @@ function send_character(response, id){
 	
 	collection = db.collection('characters');
 	
-	collection.find({"id_character": Number(id) }).project({ _id:0 }).toArray()
+	collection.find({"id_characters": Number(id) }).project({ _id: 0 }).toArray()
 		.then(character =>{
 			response.write(JSON.stringify(character));
 			response.end();
